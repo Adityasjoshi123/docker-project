@@ -1,25 +1,15 @@
-name: Docker CI/CD Pipeline
+name: Schedule Test Workflow
 
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+  workflow_dispatch:      # allows manual trigger
+  schedule:
+    - cron: '*/5 * * * *'  # runs every 5 minutes (UTC)
 
 jobs:
-  docker-build:
+  test-schedule:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v3
-
-    - name: Build Docker image
-      run: docker build -t my-docker-app .
-
-    - name: Run Docker container
-      run: docker run -d -p 8080:8080 my-docker-app
-
+      - name: Print current time
+        run: |
+          echo "✅ Schedule test workflow triggered!"
+          echo "Current UTC time: $(date -u)"
