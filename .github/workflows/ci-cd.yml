@@ -1,15 +1,32 @@
-name: Schedule Test Workflow
+name: Scheduled Test Workflow
 
 on:
-  workflow_dispatch:      # allows manual trigger
   schedule:
-    - cron: '*/5 * * * *'  # runs every 5 minutes (UTC)
+    # Runs every 5 minutes
+    - cron: "*/5 * * * *"
+  workflow_dispatch: # allows manual triggering
 
 jobs:
   test-schedule:
     runs-on: ubuntu-latest
     steps:
-      - name: Print current time
+      - name: Print start time
+        run: echo "🕒 Workflow started at $(date)"
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Print current branch and commit
         run: |
-          echo "✅ Schedule test workflow triggered!"
-          echo "Current UTC time: $(date -u)"
+          echo "📦 Branch: ${{ github.ref_name }}"
+          echo "🔢 Commit: ${{ github.sha }}"
+
+      - name: Simulate a simple task
+        run: |
+          echo "✅ This is a test run for scheduled workflow"
+          echo "Job completed successfully at $(date)"
+
+
+
+
+
